@@ -11,16 +11,19 @@ namespace ECS_Deploy
     {
         TaskManager()
         {
-            ECSClient2 = new AmazonECSClient();
+            ECSClient = new AmazonECSClient(Amazon.RegionEndpoint.GetBySystemName(DefaultSettings.General.Region));
         }
 
         string ServiceName => DefaultSettings.General.ServiceName;
         string TaskDefenitionFamily => DefaultSettings.TaskDefenition.Family;
         string DockerImage => DefaultSettings.Container.Image;
-        AmazonECSClient ECSClient = new AmazonECSClient();
-        AmazonECSClient ECSClient2;
+        AmazonECSClient ECSClient;
 
-        internal static Task<TaskDefinition> RegisterTaskDefenition() => new TaskManager().DoRegisterTaskDefenition();
+        internal static Task<TaskDefinition> RegisterTaskDefenition()
+        {
+            using (var taskManager = new TaskManager())
+                return taskManager.DoRegisterTaskDefenition();
+        }
 
         private async Task<TaskDefinition> DoRegisterTaskDefenition()
         {
@@ -53,9 +56,6 @@ namespace ECS_Deploy
             return response.TaskDefinition;
         }
 
-        public void Dispose()
-        {
-            ECSClient?.Dispose();
-        }
+        public void Dispose() => ECSClient?.Dispose();
     }
 }

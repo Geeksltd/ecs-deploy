@@ -8,19 +8,21 @@ namespace ECS_Deploy
     {
         const string DEFAULT_CONTAINER_MEMORY = "512";
         const string REQUIRES_COMPATIBILITIES = "EC2";
+        const string DEFAULT_SERVICE_LAUNCH_TYPE = "EC2";
+        const string DEFAULT_SERVICE_NUMBER_OF_TASKS_TO_RUN = "1";
         const string DEFAULT_HEALTH_CHECK_URL = "healthcheck";
         const string DEFAULT_HEALTH_CHECK_INTERVAL = "5";
         const string DEFAULT_HEALTH_CHECK_TIMEOUT = "60";
         const string DEFAULT_HEALTH_CHECK_START_PERIOD = "300";
         const string DEFAULT_HEALTH_CHECK_RETRIES = "5";
-        internal static ContainerSettings Container { get; private set; }
-        internal static TaskDefenitionSettings TaskDefenition { get; private set; }
-        internal static GeneralSettings General { get; private set; }
-        static void LoadSettings()
+        public static ContainerSettings Container { get; private set; }
+        public static TaskDefenitionSettings TaskDefenition { get; private set; }
+        public static GeneralSettings General { get; private set; }
+        internal static void LoadSettings()
         {
-            Container = new ContainerSettings().LoadFromParameters();
-            TaskDefenition = new TaskDefenitionSettings().LoadFromParameters();
-            General = new GeneralSettings().LoadFromParameters();
+            Container = Parameters.LoadProperties(new ContainerSettings());
+            TaskDefenition = Parameters.LoadProperties(new TaskDefenitionSettings());
+            General = Parameters.LoadProperties(new GeneralSettings());
         }
 
         [ArgumentNamePrefix("container")]
@@ -69,8 +71,18 @@ namespace ECS_Deploy
             [Argument(required: true)]
             public string ServiceName { get; set; }
 
+            [Argument(required: true, defaultValue: DEFAULT_SERVICE_LAUNCH_TYPE)]
+            public string ServiceLaunchType { get; set; }
+
+            [Argument(required: true, defaultValue: DEFAULT_SERVICE_NUMBER_OF_TASKS_TO_RUN)]
+            public int ServiceNumberOfTasks { get; set; }
+
             [Argument(required: true)]
             public string ClusterName { get; set; }
+
+            [Argument(required: true)]
+            public string Region { get; set; }
+
         }
 
     }

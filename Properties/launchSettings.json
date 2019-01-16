@@ -2,7 +2,7 @@
   "profiles": {
     "ECS_Deploy": {
       "commandName": "Project",
-      "commandLineArgs": "--region eu-west-1 --registry-name test"
+      "commandLineArgs": "--container-image microsoft/hellowworld --task-def-family VisualSpec --service-name VisualSpec --cluster-name UAT-Medium --region eu-west-1 --task-def-task-role-arn arn:aws:iam::177773040999:role/visualspec-runtime"
     }
   }
 }
