@@ -11,7 +11,7 @@ namespace ECS_Deploy
         public string Description;
         public bool Required;
 
-        public ArgumentAttribute(string defaultValue, bool required = false, string description = null)
+        public ArgumentAttribute(string defaultValue = null, bool required = false, string description = null)
         {
             DefaultValue = defaultValue;
             Description = description;

@@ -31,7 +31,7 @@ namespace ECS_Deploy
 
         internal string GetOrDefault(string key) => GetOrDefault<string>(key);
 
-        internal static GetArgumentName(string key) => key.WithPrefix("--");
+        internal static string GetArgumentName(string key) => key.WithPrefix("--");
 
     }
 

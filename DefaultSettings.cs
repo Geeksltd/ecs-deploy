@@ -7,7 +7,7 @@ namespace ECS_Deploy
     static class DefaultSettings
     {
         const string DEFAULT_CONTAINER_MEMORY = "512";
-        const string REQUIRES_COMPATIBILITIES = "EC2"
+        const string REQUIRES_COMPATIBILITIES = "EC2";
         const string DEFAULT_HEALTH_CHECK_URL = "healthcheck";
         const string DEFAULT_HEALTH_CHECK_INTERVAL = "5";
         const string DEFAULT_HEALTH_CHECK_TIMEOUT = "60";
@@ -53,13 +53,13 @@ namespace ECS_Deploy
         [ArgumentNamePrefix("task-def")]
         internal class TaskDefenitionSettings
         {
-            [Argument(REQUIRES_COMPATIBILITIES, "Comma seperated list of compatibilities (i.e EC2)")]
+            [Argument(REQUIRES_COMPATIBILITIES, description: "Comma seperated list of compatibilities (i.e EC2)")]
             public string RequiresCompatibilities { get; set; }
 
-            [Argument(required: true, "Comma seperated list of compatibilities (i.e EC2)")]
+            [Argument(required: true, description: "Comma seperated list of compatibilities (i.e EC2)")]
             public string Family { get; set; }
 
-            [Argument(required: true, "The arn of the iAM role used by the task at runtime")]
+            [Argument(required: true, description: "The arn of the iAM role used by the task at runtime")]
             public string TaskRoleArn { get; set; }
         }
 

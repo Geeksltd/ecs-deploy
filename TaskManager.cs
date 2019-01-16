@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Amazon.ECS;
 using Amazon.ECS.Model;
@@ -14,26 +14,15 @@ namespace ECS_Deploy
             ECSClient2 = new AmazonECSClient();
         }
 
-        string ServiceName => DefaultSettings.
-        string TaskDefenitionFamily;
-        string DockerImage;
+        string ServiceName => DefaultSettings.General.ServiceName;
+        string TaskDefenitionFamily => DefaultSettings.TaskDefenition.Family;
+        string DockerImage => DefaultSettings.Container.Image;
         AmazonECSClient ECSClient = new AmazonECSClient();
         AmazonECSClient ECSClient2;
 
-        internal static Task<string> CreateOrUpdate() => new TaskManager().DoCreateOrUpdate();
+        internal static Task<TaskDefinition> RegisterTaskDefenition() => new TaskManager().DoRegisterTaskDefenition();
 
-        async Task<string> DoCreateOrUpdate()
-        {
-            var taskDefenition = await GetExistingTaskDefenition();
-
-            if (taskDefenition == null)
-                taskDefenition = await CreateTaskDefenition();
-            else
-                taskDefenition = await UpdateTaskDefenition();
-            return taskDefenition.Revision;
-        }
-
-        private async Task<TaskDefinition> CreateOrUpdate()
+        private async Task<TaskDefinition> DoRegisterTaskDefenition()
         {
             var request = new RegisterTaskDefinitionRequest
             {
@@ -60,15 +49,6 @@ namespace ECS_Deploy
             };
 
             var response = await ECSClient.RegisterTaskDefinitionAsync(request);
-
-            return response.TaskDefinition;
-        }
-
-        private async Task<TaskDefinition> GetExistingTaskDefenition()
-        {
-            var request = new DescribeTaskDefinitionRequest { TaskDefinition = TaskDefenitionFamily };
-
-            var response = await ECSClient.DescribeTaskDefinitionAsync(request);
 
             return response.TaskDefinition;
         }
