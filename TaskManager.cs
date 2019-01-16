@@ -9,10 +9,7 @@ namespace ECS_Deploy
 {
     class TaskManager : IDisposable
     {
-        TaskManager()
-        {
-            ECSClient = new AmazonECSClient(Amazon.RegionEndpoint.GetBySystemName(DefaultSettings.General.Region));
-        }
+        TaskManager() { ECSClient = ECSHelper.CreateClient(); }
 
         string ServiceName => DefaultSettings.General.ServiceName;
         string TaskDefenitionFamily => DefaultSettings.TaskDefenition.Family;
@@ -46,6 +43,10 @@ namespace ECS_Deploy
                              Timeout = DefaultSettings.Container.HealthCheckSettings.Timeout,
                              StartPeriod = DefaultSettings.Container.HealthCheckSettings.StartPeriod,
                              Retries = DefaultSettings.Container.HealthCheckSettings.Retries
+                        },
+                        PortMappings = new List<PortMapping>
+                        {
+                            new PortMapping{ HostPort = 80, ContainerPort = 80 , Protocol = TransportProtocol.Tcp}
                         }
                     }
                 }

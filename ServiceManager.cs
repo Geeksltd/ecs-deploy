@@ -13,7 +13,11 @@ namespace ECS_Deploy
         AmazonECSClient ECSClient;
         TaskDefinition TaskDefenition;
 
-        public ServiceManager(TaskDefinition taskDefenition) => this.TaskDefenition = taskDefenition;
+        public ServiceManager(TaskDefinition taskDefenition)
+        {
+            TaskDefenition = taskDefenition;
+            ECSClient = ECSHelper.CreateClient();
+        }
 
         internal static threadingTask.Task CreateOrUpdate(TaskDefinition taskDefenition) => new ServiceManager(taskDefenition).DoCreateOrUpdate();
 
