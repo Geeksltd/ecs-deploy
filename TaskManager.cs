@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.ECS;
 using Amazon.ECS.Model;
+using Olive;
 
 namespace ECS_Deploy
 {
@@ -44,10 +45,12 @@ namespace ECS_Deploy
                              StartPeriod = DefaultSettings.Container.HealthCheckSettings.StartPeriod,
                              Retries = DefaultSettings.Container.HealthCheckSettings.Retries
                         },
-                        PortMappings = new List<PortMapping>
-                        {
-                            new PortMapping{ HostPort = 80, ContainerPort = 80 , Protocol = TransportProtocol.Tcp}
-                        }
+                        PortMappings = DefaultSettings.Container.ExposedPorts.Split(",").Select(i=>
+                                                                                                new PortMapping {
+                                                                                                    HostPort = 0,
+                                                                                                    ContainerPort = i.To<int>() ,
+                                                                                                    Protocol = TransportProtocol.Tcp
+                                                                                                }).ToList()
                     }
                 }
             };

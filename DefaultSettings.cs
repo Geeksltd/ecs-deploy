@@ -7,6 +7,7 @@ namespace ECS_Deploy
     static class DefaultSettings
     {
         const string DEFAULT_CONTAINER_MEMORY = "512";
+        const string DEFAULT_CONTAINER_EXPOSED_PORTS = "80";
         const string REQUIRES_COMPATIBILITIES = "EC2";
         const string DEFAULT_SERVICE_LAUNCH_TYPE = "EC2";
         const string DEFAULT_SERVICE_NUMBER_OF_TASKS_TO_RUN = "1";
@@ -33,6 +34,9 @@ namespace ECS_Deploy
 
             [Argument(required: true)]
             public string Image { get; set; }
+
+            [Argument(required: true, defaultValue: DEFAULT_CONTAINER_EXPOSED_PORTS, description: "Comma separated list of ports")]
+            public string ExposedPorts { get; set; }
 
             public HealthCheck HealthCheckSettings { get; set; } = new HealthCheck();
 
