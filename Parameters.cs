@@ -45,7 +45,13 @@ namespace ECS_Deploy
                 if (p.IsArgumented())
                 {
                     var argInfo = p.GetArgumentAttribute();
-                    yield return new ParameterInfo { Name = GetArgumentName(p, prefix), Description = argInfo.Description, IsMandatory = argInfo.Required };
+                    yield return new ParameterInfo
+                    {
+                        Name = GetArgumentName(p, prefix),
+                        Description = argInfo.Description,
+                        IsMandatory = argInfo.Required,
+                        DefaultValues = argInfo.DefaultValue
+                    };
                 }
                 else if (p.PropertyType.IsArgumentsWrapper())
                     foreach (var info in GetParametersInfo(p.PropertyType, prefix))
@@ -93,8 +99,9 @@ namespace ECS_Deploy
             public string Name { get; set; }
             public string Description { get; set; }
             public bool IsMandatory { get; set; }
+            public string DefaultValues { get; set; }
 
-            public override string ToString() => $"{Name}{"*".OnlyWhen(IsMandatory)}\t {Description}";
+            public override string ToString() => $"{Name}{"*".OnlyWhen(IsMandatory)}\t {Description} \t {DefaultValues.WithPrefix("Default value(s): ")}";
         }
     }
 
