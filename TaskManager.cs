@@ -39,7 +39,7 @@ namespace ECS_Deploy
                         Essential = true,
                         HealthCheck = new HealthCheck
                         {
-                             Command = new List<string>{ "http://localhost/" + DefaultSettings.Container.HealthCheckSettings.Url },
+                             Command = new List<string>{ GetHealthCheckCommand() },
                              Interval = DefaultSettings.Container.HealthCheckSettings.Interval,
                              Timeout = DefaultSettings.Container.HealthCheckSettings.Timeout,
                              StartPeriod = DefaultSettings.Container.HealthCheckSettings.StartPeriod,
@@ -60,6 +60,12 @@ namespace ECS_Deploy
             return response.TaskDefinition;
         }
 
+        string GetHealthCheckCommand() =>
+            $"CMD-SHELL, echo 0";
+        //TODO : $"CMD-SHELL, powershell -command 'try{{ if ((Invoke-WebRequest -Uri \"http://localhost:{DefaultSettings.Container.ExposedPorts.Split(",").First()}/{DefaultSettings.Container.HealthCheckSettings.Url}\" -UseBasicParsing -DisableKeepAlive).StatusCode -ne 200) {{ return 1 }} else {{ return 0}}  }} catch {{ return 1  }}'";
+
         public void Dispose() => ECSClient?.Dispose();
+
+
     }
 }

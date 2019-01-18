@@ -43,13 +43,21 @@ namespace ECS_Deploy
 
         private threadingTask.Task CreateService()
         {
+            throw new NotImplementedException("Services should be created and configured manually for now.");
+
             var request = new CreateServiceRequest
             {
                 Cluster = DefaultSettings.General.ClusterName,
                 LaunchType = LaunchType.FindValue(DefaultSettings.General.ServiceLaunchType),
                 DesiredCount = DefaultSettings.General.ServiceNumberOfTasks,
                 ServiceName = DefaultSettings.General.ServiceName,
-                TaskDefinition = TaskDefenition.TaskDefinitionArn
+                TaskDefinition = TaskDefenition.TaskDefinitionArn,
+                LoadBalancers = new List<LoadBalancer>
+                {
+                     new LoadBalancer{
+                         LoadBalancerName = DefaultSettings.General.ServiceName,
+                     }
+                }
             };
 
             return ECSClient.CreateServiceAsync(request);

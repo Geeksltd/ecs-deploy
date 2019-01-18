@@ -12,10 +12,10 @@ namespace ECS_Deploy
         const string DEFAULT_SERVICE_LAUNCH_TYPE = "EC2";
         const string DEFAULT_SERVICE_NUMBER_OF_TASKS_TO_RUN = "1";
         const string DEFAULT_HEALTH_CHECK_URL = "healthcheck";
-        const string DEFAULT_HEALTH_CHECK_INTERVAL = "5";
+        const string DEFAULT_HEALTH_CHECK_INTERVAL = "30";
         const string DEFAULT_HEALTH_CHECK_TIMEOUT = "60";
-        const string DEFAULT_HEALTH_CHECK_START_PERIOD = "300";
-        const string DEFAULT_HEALTH_CHECK_RETRIES = "5";
+        const string DEFAULT_HEALTH_CHECK_START_PERIOD = "1";
+        const string DEFAULT_HEALTH_CHECK_RETRIES = "10";
         public static ContainerSettings Container { get; private set; }
         public static TaskDefenitionSettings TaskDefenition { get; private set; }
         public static GeneralSettings General { get; private set; }
